@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>资源分享</title>
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="animate.min.css"> <!-- 如果你选择使用动画库 -->
   <style>
     /* 美化模态框 */
     .modal {
@@ -20,10 +19,10 @@
       background-color: rgba(0,0,0,0.4); /* 半透明背景 */
     }
     .modal-content {
-      background-color: #fefefe;
+      background-color: var(--secondary-color);
       margin: 15% auto;
       padding: 20px;
-      border: 1px solid #888;
+      border: 1px solid var(--border-color);
       width: 30%; /* 可根据需要调整宽度 */
       min-width: 300px;
       max-width: 600px;
@@ -31,14 +30,14 @@
       box-shadow: 0 5px 15px rgba(0,0,0,.5);
     }
     .close {
-      color: #aaa;
+      color: var(--text-color);
       float: right;
       font-size: 28px;
       font-weight: bold;
     }
     .close:hover,
     .close:focus {
-      color: black;
+      color: var(--text-color);
       text-decoration: none;
       cursor: pointer;
     }
@@ -47,7 +46,7 @@
       padding: 10px;
       margin: 10px 0;
       display: block;
-      border: 1px solid #ccc;
+      border: 1px solid var(--border-color);
       border-radius: 4px;
     }
     button {
@@ -141,6 +140,64 @@
         alert('密码错误，请重试！');
       }
     });
+
+    // 主题切换功能
+    function toggleTheme() {
+      const body = document.body;
+      const themeToggle = document.getElementById('theme-toggle');
+      
+      if (body.classList.contains('dark-theme')) {
+        body.classList.remove('dark-theme');
+        themeToggle.textContent = '切换主题';
+        localStorage.setItem('theme', 'light');
+      } else {
+        body.classList.add('dark-theme');
+        themeToggle.textContent = '恢复默认';
+        localStorage.setItem('theme', 'dark');
+      }
+    }
+
+    // 页面加载时检查用户的偏好设置
+    window.onload = function() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      const themeToggle = document.getElementById('theme-toggle');
+
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark-theme');
+        themeToggle.textContent = '恢复默认';
+      } else {
+        themeToggle.textContent = '切换主题';
+      }
+
+      // 懒加载图片
+      let lazyImages = [].slice.call(document.querySelectorAll("img.lazyload"));
+      if ("IntersectionObserver" in window) {
+        let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              let lazyImage = entry.target;
+              lazyImage.src = lazyImage.dataset.src;
+              lazyImage.classList.remove('lazyload');
+              lazyImageObserver.unobserve(lazyImage);
+            }
+          });
+        });
+
+        lazyImages.forEach(function(lazyImage) {
+          lazyImageObserver.observe(lazyImage);
+        });
+      }
+
+      // 平滑滚动效果
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+          });
+        });
+      });
+    };
   </script>
 </body>
 </html>

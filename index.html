@@ -29,18 +29,6 @@
       border-radius: 5px;
       box-shadow: 0 5px 15px rgba(0,0,0,.5);
     }
-    .close {
-      color: var(--text-color);
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-    }
-    .close:hover,
-    .close:focus {
-      color: var(--text-color);
-      text-decoration: none;
-      cursor: pointer;
-    }
     input[type="password"] {
       width: calc(100% - 22px);
       padding: 10px;
@@ -81,7 +69,6 @@
   <!-- 密码保护层 -->
   <div id="password-modal" class="modal">
     <div class="modal-content">
-      <span class="close" onclick="document.getElementById('password-modal').style.display='none'">&times;</span>
       <form id="password-form">
         <h2>请输入密码</h2>
         <input type="password" id="passwordInput" placeholder="密码" required>
